@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e1e2f">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>To-Do App</title>
@@ -12,6 +14,11 @@ body {
     background: linear-gradient(135deg, #1e1e2f, #3a3a6a);
     color: white;
     overflow-x: hidden;
+}
+
+.dark {
+    background: black;
+    color: white;
 }
 
 .container {
@@ -82,38 +89,38 @@ li {
     border-radius: 5px;
 }
 
+/* Dark button */
+.dark-btn {
+    margin-bottom: 10px;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 22px;
     }
-
-    input {
-        font-size: 14px;
-    }
-
-    button {
-        font-size: 14px;
-    }
 }
+
 .creator a {
     color: cyan;
     text-decoration: none;
     font-weight: bold;
-    text-align: center;
-    margin-bottom: 15px;
 }
 .creator a:hover {
     text-decoration: underline;
 }
 </style>
-
 </head>
+
 <body>
+
 <div class="container">
+    <button class="dark-btn" onclick="toggleMode()">🌙 Dark Mode</button>
+
     <h1>📝 My To-Do List</h1>
-	<p class="creator">
-	Created by <a href="https://riju-web-dev.github.io/portfolio-website/" target="_blank">Riju Bose</a>
-	</p>
+
+    <p class="creator">
+        Created by <a href="https://riju-web-dev.github.io/portfolio-website/" target="_blank">Riju Bose</a>
+    </p>
 
     <div class="input-box">
         <input type="text" id="taskInput" placeholder="Enter your task">
@@ -124,6 +131,17 @@ li {
 </div>
 
 <script>
+
+function saveTasks() {
+    localStorage.setItem("tasks", document.getElementById("taskList").innerHTML);
+}
+
+function loadTasks() {
+    document.getElementById("taskList").innerHTML = localStorage.getItem("tasks") || "";
+}
+
+loadTasks();
+
 function addTask() {
     let input = document.getElementById("taskInput");
     let task = input.value;
@@ -138,17 +156,20 @@ function addTask() {
     li.innerHTML = `
         <div class="task-left">
             <input type="checkbox" onclick="toggleTask(this)">
-            <span>${task}</span>
+            <span onclick="editTask(this)">${task}</span>
         </div>
         <button class="delete" onclick="deleteTask(this)">X</button>
     `;
 
     document.getElementById("taskList").appendChild(li);
     input.value = "";
+
+    saveTasks();
 }
 
 function deleteTask(btn) {
     btn.parentElement.remove();
+    saveTasks();
 }
 
 function toggleTask(checkbox) {
@@ -160,6 +181,24 @@ function toggleTask(checkbox) {
     } else {
         text.classList.remove("completed");
     }
+
+    saveTasks();
+}
+
+function editTask(element) {
+    let newText = prompt("Edit your task:", element.innerText);
+    if (newText !== null && newText !== "") {
+        element.innerText = newText;
+        saveTasks();
+    }
+}
+
+function toggleMode() {
+    document.body.classList.toggle("dark");
+}
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
 }
 </script>
 
