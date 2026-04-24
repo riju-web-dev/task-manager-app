@@ -127,6 +127,14 @@ li {
     border-radius: 5px;
     border: none;
 }
+ ol {
+    padding-left: 20px;
+}
+
+li {
+    list-style-position: inside;
+}
+
 @media (max-width: 600px) {
     .time-box {
         flex-direction: column;
@@ -170,8 +178,7 @@ li {
         <input type="time" id="endTime">
     </div>
 </div>
-<ul id="taskList"></ul>
-
+<ol id="taskList"></ol>
 <script>
 
 function saveTasks() {
