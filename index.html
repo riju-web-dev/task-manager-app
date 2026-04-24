@@ -111,8 +111,6 @@ li::before {
     cursor: pointer;
     border-radius: 5px;
 }
-
-/* Dark button */
 .dark-btn {
     margin-bottom: 10px;
 }
@@ -293,8 +291,6 @@ if ("serviceWorker" in navigator) {
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-
-    // button show করো
     document.getElementById("installBtn").style.display = "block";
 });
 
