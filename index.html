@@ -108,6 +108,31 @@ li {
 .creator a:hover {
     text-decoration: underline;
 }
+    .time-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.time-box div {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    text-align: left;
+}
+
+.time-box input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+@media (max-width: 600px) {
+    .time-box {
+        flex-direction: column;
+    }
+}
+
 </style>
 </head>
 
@@ -125,12 +150,27 @@ li {
     </p>
 
     <div class="input-box">
-        <input type="text" id="taskInput" placeholder="Enter your task">
-        <button onclick="addTask()">Add</button>
+    <input type="text" id="taskInput" placeholder="Enter your task">
+    <button onclick="addTask()">Add</button>
+</div>
+
+<div class="time-box">
+    <div>
+        <label>Date</label>
+        <input type="date" id="taskDate">
     </div>
 
-    <ul id="taskList"></ul>
+    <div>
+        <label>Start Time</label>
+        <input type="time" id="startTime">
+    </div>
+
+    <div>
+        <label>End Time</label>
+        <input type="time" id="endTime">
+    </div>
 </div>
+<ul id="taskList"></ul>
 
 <script>
 
@@ -146,11 +186,26 @@ loadTasks();
 
 function addTask() {
     let input = document.getElementById("taskInput");
-    let task = input.value;
+    let date = document.getElementById("taskDate").value;
+    let start = document.getElementById("startTime").value;
+    let end = document.getElementById("endTime").value;
+
+    let task = input.value.trim();
 
     if (task === "") {
         alert("Please enter a task");
         return;
+    }
+    if (date === "" || start === "" || end === "") {
+    let confirmAdd = confirm("Do you want to add task without date & time?");
+    if (!confirmAdd) {
+        return;
+    }
+}
+    let dayName = "";
+    if (date) {
+        let d = new Date(date);
+        dayName = d.toLocaleDateString("en-US", { weekday: "long" });
     }
 
     let li = document.createElement("li");
@@ -158,13 +213,21 @@ function addTask() {
     li.innerHTML = `
         <div class="task-left">
             <input type="checkbox" onclick="toggleTask(this)">
-            <span onclick="editTask(this)">${task}</span>
+            <span onclick="editTask(this)">
+                ${task}<br>
+                📅 ${date ? date + " (" + dayName + ")" : ""}
+                ${start && end ? "<br>⏰ " + start + " - " + end : ""}
+            </span>
         </div>
         <button class="delete" onclick="deleteTask(this)">X</button>
     `;
 
     document.getElementById("taskList").appendChild(li);
+
     input.value = "";
+    document.getElementById("taskDate").value = "";
+    document.getElementById("startTime").value = "";
+    document.getElementById("endTime").value = "";
 
     saveTasks();
 }
