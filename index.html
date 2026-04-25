@@ -202,6 +202,17 @@ function saveTasks() {
 function loadTasks() {
     document.getElementById("taskList").innerHTML = localStorage.getItem("tasks") || "";
 }
+    function formatTime(time) {
+    if (!time) return "";
+
+    let [hour, minute] = time.split(":");
+    hour = parseInt(hour);
+
+    let ampm = hour >= 12 ? "PM" : "AM";
+    hour = hour % 12 || 12;
+
+    return `${hour}:${minute} ${ampm}`;
+}
 
 loadTasks();
 
@@ -237,7 +248,8 @@ function addTask() {
             <span onclick="editTask(this)">
                 ${task}<br>
                 📅 ${date ? date + " (" + dayName + ")" : ""}
-                ${start && end ? "<br>⏰ " + start + " - " + end : ""}
+               ${start && end ? "<br>⏰ " + formatTime(start) + " - " + formatTime(end) : ""}
+
             </span>
         </div>
         <button class="delete" onclick="deleteTask(this)">X</button>
