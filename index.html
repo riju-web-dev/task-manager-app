@@ -252,18 +252,19 @@ function saveTasks() {
 function loadTasks() {
     document.getElementById("taskList").innerHTML = localStorage.getItem("tasks") || "";
 }
-    function formatTime(time) {
+   function formatTime(time) {
     if (!time) return "";
 
-    let [hour, minute] = time.split(":");
-    hour = parseInt(hour);
+    let date = new Date(`1970-01-01T${time}`);
+    
+    let hour = date.getHours();
+    let minute = date.getMinutes();
 
     let ampm = hour >= 12 ? "PM" : "AM";
     hour = hour % 12 || 12;
 
-    return `${hour}:${minute} ${ampm}`;
+    return `${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
 }
-
 loadTasks();
 
 function addTask() {
@@ -375,6 +376,7 @@ function toggleTime() {
         btn.innerText = "📅 Add Date & Time";
     }
 }
+    
 </script>
 
 </body>
