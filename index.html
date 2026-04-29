@@ -115,46 +115,94 @@ li::before {
     margin-bottom: 10px;
 }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 22px;
-    }
+#toggleBtn {
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 .creator a {
     color: cyan;
     text-decoration: none;
     font-weight: bold;
 }
+
+.creator a:visited {
+    color: cyan;
+}
+
 .creator a:hover {
-    text-decoration: underline;
+    color: white;
 }
-    .time-box {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    justify-content: center;
-}
-
-.time-box div {
-    display: flex;
-    flex-direction: column;
-    font-size: 12px;
-    text-align: left;
-}
-
-.time-box input {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-}
-
 @media (max-width: 600px) {
-    .time-box {
-        flex-direction: column;
+
+        h1 {
+        font-size: 22px;
     }
+
+        .input-box {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .input-box input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .input-box button {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    #toggleBtn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+       .time-box {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .time-box div {
+        width: 100%;
+    }
+
+    .time-box input {
+        padding: 6px;
+        font-size: 13px;
+    }
+
+    .time-box label {
+        font-size: 11px;
+    }
+
+      .task-left span {
+        font-size: 13px;
+    }
+
+        .delete {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+.creator a {
+    color: cyan;
+    text-decoration: none;
+    font-weight: bold;
 }
 
+.creator a:visited {
+    color: cyan;
+}
+
+.creator a:hover {
+    color: white;
+}
+
+}
 </style>
 </head>
 
@@ -171,12 +219,14 @@ li::before {
         Created by <a href="https://riju-web-dev.github.io/portfolio-website/" target="_blank">Riju Bose</a>
     </p>
 
-    <div class="input-box">
+   <div class="input-box">
     <input type="text" id="taskInput" placeholder="Enter your task">
     <button onclick="addTask()">Add</button>
 </div>
 
-<div class="time-box">
+<button id="toggleBtn" onclick="toggleTime()">📅 Add Date & Time</button>
+
+<div class="time-box" id="timeBox" style="display:none;">
     <div>
         <label>Date</label>
         <input type="date" id="taskDate">
@@ -247,7 +297,7 @@ function addTask() {
             <input type="checkbox" onclick="toggleTask(this)">
             <span onclick="editTask(this)">
                 ${task}<br>
-                📅 ${date ? date + " (" + dayName + ")" : ""}
+                 ${date ? date + " (" + dayName + ")" : ""}
                ${start && end ? "<br>⏰ " + formatTime(start) + " - " + formatTime(end) : ""}
 
             </span>
@@ -313,6 +363,18 @@ document.getElementById("installBtn").addEventListener("click", async () => {
         deferredPrompt = null;
     }
 });
+function toggleTime() {
+    let box = document.getElementById("timeBox");
+    let btn = document.getElementById("toggleBtn");
+
+    if (box.style.display === "none") {
+        box.style.display = "flex";
+        btn.innerText = "❌ Remove Date & Time";
+    } else {
+        box.style.display = "none";
+        btn.innerText = "📅 Add Date & Time";
+    }
+}
 </script>
 
 </body>
